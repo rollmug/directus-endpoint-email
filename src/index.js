@@ -25,7 +25,7 @@ export default {
 	id: 'email',
 	handler: (router) => {
 		/**
-		 * disallow GET requests
+		 * test endpoint is working
 		 */
 		router.get('/', (req, res) => {
 			return res.json({ success: 'Endpoint is working.' });
