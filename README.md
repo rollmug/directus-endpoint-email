@@ -42,7 +42,7 @@ Make sure these two env variables are also added to the `.env` file (or server e
 
 ## Restart Directus
 
-Restart the directus container to ensure the new extension is loaded. Check the logs to make sure they are no errors. 
+Restart the directus container to ensure the new extension is loaded. Check the logs to make sure there are no errors. 
 
 ## Testing
 
