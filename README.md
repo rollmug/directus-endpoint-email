@@ -21,7 +21,7 @@ npm install
 npm run build
 ```
 
-Copy the folders from the newly generated `dist` directory into your Directus extensions folder. In a  Docker container, you can do this by adding it to the volume definitions in your `docker-compose.yml` file:
+Copy the folders from the newly generated `dist` directory into your Directus extensions folder. In a  Docker container, you can do this simply by adding it to the volume definitions in your `docker-compose.yml` file:
 
 ```yaml
 volumes:
