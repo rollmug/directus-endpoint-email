@@ -1,0 +1,31 @@
+{
+	"name": "directus-endpoint-email",
+	"description": "Endpoint extension for sending emails via Mailchimp Transactional API",
+	"icon": "extension",
+	"version": "1.0.0",
+	"keywords": [
+		"directus",
+		"directus-extension",
+		"directus-custom-endpoint"
+	],
+	"type": "module",
+	"directus:extension": {
+		"type": "endpoint",
+		"path": "dist/index.js",
+		"source": "src/index.js",
+		"host": "^10.3.0"
+	},
+	"scripts": {
+		"build": "directus-extension build",
+		"dev": "directus-extension build -w --no-minify",
+		"link": "directus-extension link"
+	},
+	"devDependencies": {
+		"@directus/extensions-sdk": "10.3.0"
+	},
+	"dependencies": {
+		"@mailchimp/mailchimp_transactional": "^1.0.50",
+		"formidable": "^3.5.1",
+		"fs-extra": "^11.2.0"
+	}
+}
