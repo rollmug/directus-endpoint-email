@@ -2,7 +2,13 @@
 
 ## Installation
 
-Clone this repository into your directus project (in the same directory as your `docker-compose.yml` file), then run the following commands:
+Clone this repository into your directus project (in the same directory as your `docker-compose.yml` file):
+
+```shell
+git clone https://github.com/rollmug/directus-endpoint-email.git
+```
+
+Then run the following commands:
 
 ```shell
 # cd into it
