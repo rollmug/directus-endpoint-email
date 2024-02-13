@@ -21,7 +21,7 @@ npm install
 npm run build
 ```
 
-Copy the folders from the newly generated `dist` directory into your Directus extensions folder. In a  Docker container, you can do this simply by adding it to the volume definitions in your `docker-compose.yml` file:
+The folders from the newly generated `dist` directory need to go into your Directus extensions folder. In a  Docker container, you can do this simply by adding it to the volume definitions in your `docker-compose.yml` file:
 
 ```yaml
 volumes:
@@ -44,6 +44,16 @@ Make sure these three env variables are also added to the `.env` file (or server
 ## Restart Directus
 
 Restart the directus container to ensure the new extension is loaded. Check the logs to make sure there are no errors. 
+
+## Update the extension:
+
+```shell
+cd directus-endpoint-email
+git pull
+npm run build
+```
+
+Then restart the directus service.
 
 ## Testing
 
