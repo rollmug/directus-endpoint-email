@@ -6,6 +6,8 @@ import fs from 'fs';
 const mail = mailchimp(process.env.MAILCHIMP_API_KEY);
 const fromEmail = process.env.MAILCHIMP_FROM_EMAIL;
 const fromName = "York County History Center";
+const filesURLBase = process.env.PUBLIC_URL + '/assets/';
+const directusAPIURL = process.env.PUBLIC_URL + '/items/';
 
 const isValidEmail = (email) => {
 	const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -19,6 +21,31 @@ const isValidUpload = (upload) => {
 const base64_encode = (file) => {
 	const bitmap = fs.readFileSync(file);
 	return Buffer.from(bitmap).toString('base64');
+}
+
+const permissionForm = () => {
+	return new Promise(async (resolve, reject) => {
+		const url = directusAPIURL + 'YourStoryAudioBooth/1';
+
+		try {
+			const data = await fetch(url, {
+				method: 'GET',
+				headers: {
+					'Authorization': `Bearer ${process.env.DIRECTUS_API_KEY}`
+				},
+			}).then((response) => {
+				return response.json();
+			}).then((data) => {
+				return data;
+			}).catch((err) => {
+				reject(err);
+			});
+
+			resolve(data);
+		} catch (error) {
+			reject(error);
+		}
+	});
 }
 
 export default {
@@ -68,9 +95,9 @@ export default {
 					sites = parsedData.sites;
 
 					for (const site of sites) {
-						if (!site.siteName || !site.locationInfo || !site.curatorCollection || !site.address || !site.thumbnail) {
+						if (!site.siteName || !site.locationInfo || !site.curatorCollection || !site.address || !site.thumbnail || !site.website) {
 							res.status(400);
-							return res.json({ error: `Each site object must contain keys for siteName, locationInfo, curatorCollection, address, and thumbnail.` });
+							return res.json({ error: `Each site object must contain keys for siteName, locationInfo, curatorCollection, address, website, and thumbnail.` });
 						}
 					}
 				} else {
@@ -129,11 +156,16 @@ export default {
 		 * Audio Booth endpoint
 		 */
 		router.post('/audio', async (req, res) => {
-			let isMinor = true, question, email, fields, files, audio, base64File;
+			let isMinor = true, question, email, fields, files, audio, base64File, permissionFormLink;
 
 			if (req.accountability?.user == null) {
 				res.status(403);
 				return res.json({ error: `You don't have permission to access this.` });
+			}
+
+			const permissionFormData = await permissionForm();
+			if (permissionFormData.data.permission_form !== null) {
+				permissionFormLink = filesURLBase + permissionFormData.data.permission_form;
 			}
 
 			try {
@@ -179,7 +211,7 @@ export default {
 					templateVars = {
 						header: "Thank You for Recording",
 						p1: `Your recording is attached. You answered the question: “${question}”`,
-						p2: "If you would like your York County memories to be part of our archives, please forward your recording and the attached permission form to: stories@yorkhistorycenter.org."
+						p2: (permissionFormLink ? `If you would like your York County memories to be part of our archives, please forward your recording along with <a href="${permissionFormLink}" style="color: #c9144a !important; text-decoration:underline !important">this permission form</a> to: stories@yorkhistorycenter.org.` : '')
 					}
 				} else {
 					templateVars = {
@@ -233,7 +265,7 @@ export default {
 				};
 
 				try {
-					const response = await mail.messages.sendTemplate({
+					let response = await mail.messages.sendTemplate({
 						template_name: "audio-booth",
 						template_content: [{}],
 						message: message
