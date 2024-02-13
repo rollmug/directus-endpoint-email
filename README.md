@@ -29,16 +29,17 @@ volumes:
     - ./directus-endpoint-email/dist:/directus/extensions/endpoints/directus-extension-endpoint-email
 ```
 
-Additionally, two environment variables are needed. Add them in appropriate section of the `docker-compose.yml` file:
+Additionally, three environment variables are needed. Add them in appropriate section of the `docker-compose.yml` file:
 
 ```yaml
 environment:
     [other env vars here]
     MAILCHIMP_API_KEY: ${MAILCHIMP_API_KEY}
     MAILCHIMP_FROM_EMAIL: ${MAILCHIMP_FROM_EMAIL}
+    DIRECTUS_API_KEY: ${DIRECTUS_API_KEY}
 ```
 
-Make sure these two env variables are also added to the `.env` file (or server environment), with the actual values for API Key and email.
+Make sure these three env variables are also added to the `.env` file (or server environment), with the actual values for API Keys and email.
 
 ## Restart Directus
 
