@@ -95,9 +95,9 @@ export default {
 					sites = parsedData.sites;
 
 					for (const site of sites) {
-						if (!site.siteName || !site.locationInfo || !site.curatorCollection || !site.address || !site.thumbnail || !site.website) {
+						if (!site.siteName || !site.locationInfo || !site.address || !site.thumbnail || !site.website) {
 							res.status(400);
-							return res.json({ error: `Each site object must contain keys for siteName, locationInfo, curatorCollection, address, website, and thumbnail.` });
+							return res.json({ error: `Each site object must contain keys for siteName, locationInfo, address, website, and thumbnail.` });
 						}
 					}
 				} else {
